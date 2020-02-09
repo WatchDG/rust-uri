@@ -22,3 +22,15 @@ impl Port {
         String::from(&self.0)
     }
 }
+
+impl From<&str> for Port {
+    fn from(data: &str) -> Self {
+        Self(String::from(data))
+    }
+}
+
+impl From<String> for Port {
+    fn from(data: String) -> Self {
+        Self(data)
+    }
+}
