@@ -1,5 +1,3 @@
-use std::fmt;
-
 use super::host::Host;
 use super::port::Port;
 use super::user_info::UserInfo;
