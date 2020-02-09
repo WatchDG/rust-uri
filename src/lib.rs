@@ -1,48 +1,14 @@
-extern crate regex;
+pub mod host;
+pub mod port;
+pub mod user_info;
 
-use regex::Regex;
-use std::fmt;
+use host::Host;
+use port::Port;
 use std::io::Error;
-
-pub struct Port(String);
-
-impl fmt::Display for Port {
-    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "Port({})", self.0)
-    }
-}
-
-impl Port {
-    pub fn new(data: String) -> Self {
-        Self(data)
-    }
-    pub fn validate(&self) -> bool {
-        Regex::new(r"^\d*$").unwrap().is_match(self.0.as_str())
-    }
-    pub fn port(&self) -> String {
-        String::from(&self.0)
-    }
-}
-
-pub struct UserInfo(String);
-
-impl fmt::Display for UserInfo {
-    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "UserInfo({})", self.0)
-    }
-}
-
-impl UserInfo {
-    pub fn new(data: String) -> Self {
-        Self(data)
-    }
-    pub fn user_info(&self) -> String {
-        String::from(&self.0)
-    }
-}
+use user_info::UserInfo;
 
 pub struct Authority {
-    host: String,
+    host: Host,
     port: Option<Port>,
     user_info: Option<UserInfo>,
 }
@@ -50,7 +16,7 @@ pub struct Authority {
 impl Default for Authority {
     fn default() -> Self {
         Self {
-            host: "localhost".into(),
+            host: Host::new("localhost".into()),
             port: None,
             user_info: None,
         }
@@ -58,13 +24,13 @@ impl Default for Authority {
 }
 
 impl Authority {
-    pub fn new(host: String) -> Self {
+    pub fn new(host: Host) -> Self {
         Authority {
             host,
             ..Self::default()
         }
     }
-    pub fn build(host: String, port: Option<Port>, user_info: Option<UserInfo>) -> Self {
+    pub fn build(host: Host, port: Option<Port>, user_info: Option<UserInfo>) -> Self {
         Self {
             host,
             port,
@@ -77,7 +43,7 @@ impl Authority {
             Some(user_info) => string.push_str(format!("{}@", user_info.user_info()).as_str()),
             None => {}
         }
-        string.push_str(self.host.as_str());
+        string.push_str(self.host.host().as_str());
         match &self.port {
             Some(port) => string.push_str(format!(":{}", port.port()).as_str()),
             None => {}
