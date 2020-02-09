@@ -15,7 +15,7 @@ impl Query {
                 'A'..='Z' | 'a'..='z' | '0'..='9' | '-' | '_' | '.' | '~' => {
                     string.push(*byte as char)
                 }
-                byte => string.push_str(format!("%{:02x}", byte as u8).as_str()),
+                byte => string.push_str(format!("%{:02X}", byte as u8).as_str()),
             }
         }
         Ok(Query { data: string })
