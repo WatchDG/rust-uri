@@ -1,21 +1,49 @@
+extern crate regex;
+
+use regex::Regex;
+use std::fmt;
 use std::io::Error;
 
-pub struct UserInfo {
-    data: String,
+pub struct Port(String);
+
+impl fmt::Display for Port {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        write!(formatter, "Port({})", self.0)
+    }
+}
+
+impl Port {
+    pub fn new(data: String) -> Self {
+        Self(data)
+    }
+    pub fn validate(&self) -> bool {
+        Regex::new(r"^\d*$").unwrap().is_match(self.0.as_str())
+    }
+    pub fn port(&self) -> String {
+        String::from(&self.0)
+    }
+}
+
+pub struct UserInfo(String);
+
+impl fmt::Display for UserInfo {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        write!(formatter, "UserInfo({})", self.0)
+    }
 }
 
 impl UserInfo {
-    pub fn new(data: String) -> UserInfo {
-        UserInfo { data }
+    pub fn new(data: String) -> Self {
+        Self(data)
     }
     pub fn user_info(&self) -> String {
-        String::from(&self.data)
+        String::from(&self.0)
     }
 }
 
 pub struct Authority {
     host: String,
-    port: Option<String>,
+    port: Option<Port>,
     user_info: Option<UserInfo>,
 }
 
@@ -36,7 +64,7 @@ impl Authority {
             ..Self::default()
         }
     }
-    pub fn build(host: String, port: Option<String>, user_info: Option<UserInfo>) -> Self {
+    pub fn build(host: String, port: Option<Port>, user_info: Option<UserInfo>) -> Self {
         Self {
             host,
             port,
@@ -51,7 +79,7 @@ impl Authority {
         }
         string.push_str(self.host.as_str());
         match &self.port {
-            Some(port) => string.push_str(format!(":{}", port).as_str()),
+            Some(port) => string.push_str(format!(":{}", port.port()).as_str()),
             None => {}
         }
         string
