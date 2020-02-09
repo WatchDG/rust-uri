@@ -1,8 +1,67 @@
 use std::io::Error;
 
+pub struct UserInfo {
+    data: String,
+}
+
+impl UserInfo {
+    pub fn new(data: String) -> UserInfo {
+        UserInfo { data }
+    }
+    pub fn user_info(&self) -> String {
+        String::from(&self.data)
+    }
+}
+
+pub struct Authority {
+    host: String,
+    port: Option<String>,
+    user_info: Option<UserInfo>,
+}
+
+impl Default for Authority {
+    fn default() -> Self {
+        Self {
+            host: "localhost".into(),
+            port: None,
+            user_info: None,
+        }
+    }
+}
+
+impl Authority {
+    pub fn new(host: String) -> Self {
+        Authority {
+            host,
+            ..Self::default()
+        }
+    }
+    pub fn build(host: String, port: Option<String>, user_info: Option<UserInfo>) -> Self {
+        Self {
+            host,
+            port,
+            user_info,
+        }
+    }
+    pub fn authority(&self) -> String {
+        let mut string = String::new();
+        match &self.user_info {
+            Some(user_info) => string.push_str(format!("{}@", user_info.user_info()).as_str()),
+            None => {}
+        }
+        string.push_str(self.host.as_str());
+        match &self.port {
+            Some(port) => string.push_str(format!(":{}", port).as_str()),
+            None => {}
+        }
+        string
+    }
+}
+
 pub struct Query {
     pub data: String,
 }
+
 impl Query {
     pub fn new(data: String) -> Query {
         Query { data }
@@ -18,24 +77,5 @@ impl Query {
             }
         }
         Ok(Query { data: string })
-    }
-}
-
-pub struct Authority {
-    host: String,
-    port: Option<String>,
-}
-impl Authority {
-    pub fn new(host: String, port: Option<String>) -> Authority {
-        Authority { host, port }
-    }
-    pub fn authority(&self) -> String {
-        let mut string = String::new();
-        string.push_str(self.host.as_str());
-        match &self.port {
-            Some(port) => string.push_str(format!(":{}", port).as_str()),
-            None => {}
-        }
-        string
     }
 }
