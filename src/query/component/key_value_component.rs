@@ -1,6 +1,6 @@
 use std::error::Error;
 
-pub fn pct_encode(data: &String) -> Result<String, Box<dyn Error>> {
+pub fn pct_encode(data: &str) -> Result<String, Box<dyn Error>> {
     let mut string = String::with_capacity(data.len());
     for byte in data.as_bytes().iter() {
         match *byte as char {

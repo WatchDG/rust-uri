@@ -1,6 +1,10 @@
-use super::host::Host;
-use super::port::Port;
-use super::user_info::UserInfo;
+mod host;
+mod port;
+mod user_info;
+
+pub use host::*;
+pub use port::*;
+pub use user_info::*;
 
 pub struct Authority {
     host: Host,
@@ -35,12 +39,12 @@ impl Authority {
     pub fn authority(&self) -> String {
         let mut string = String::new();
         match &self.user_info {
-            Some(user_info) => string.push_str(format!("{}@", user_info.user_info()).as_str()),
+            Some(user_info) => string.push_str(format!("{}@", user_info.to_string()).as_str()),
             None => {}
         }
-        string.push_str(self.host.host().as_str());
+        string.push_str(self.host.to_string().as_str());
         match &self.port {
-            Some(port) => string.push_str(format!(":{}", port.port()).as_str()),
+            Some(port) => string.push_str(format!(":{}", port.to_string()).as_str()),
             None => {}
         }
         string
