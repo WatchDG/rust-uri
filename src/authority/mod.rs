@@ -4,6 +4,7 @@ mod user_info;
 
 pub use host::*;
 pub use port::*;
+use string_repr::StringRepr;
 pub use user_info::*;
 
 pub struct Authority {
@@ -12,41 +13,34 @@ pub struct Authority {
     user_info: Option<UserInfo>,
 }
 
-impl Default for Authority {
-    fn default() -> Self {
-        Self {
-            host: Host::new("localhost".into()),
-            port: None,
-            user_info: None,
+impl StringRepr for Authority {
+    fn string_repr(&self) -> String {
+        let mut string = String::new();
+        match &self.user_info {
+            Some(user_info) => string.push_str(format!("{}@", user_info.string_repr()).as_str()),
+            None => {}
         }
+        string.push_str(self.host.string_repr().as_str());
+        match &self.port {
+            Some(port) => string.push_str(format!(":{}", port.string_repr()).as_str()),
+            None => {}
+        }
+        string
     }
 }
 
 impl Authority {
-    pub fn new(host: Host) -> Self {
+    pub fn new(host: Host) -> Authority {
         Authority {
             host,
-            ..Self::default()
+            port: None,
+            user_info: None,
         }
     }
-    pub fn build(host: Host, port: Option<Port>, user_info: Option<UserInfo>) -> Self {
-        Self {
-            host,
-            port,
-            user_info,
-        }
+    pub fn set_port(&mut self, port: Port) {
+        self.port = Some(port);
     }
-    pub fn authority(&self) -> String {
-        let mut string = String::new();
-        match &self.user_info {
-            Some(user_info) => string.push_str(format!("{}@", user_info.to_string()).as_str()),
-            None => {}
-        }
-        string.push_str(self.host.to_string().as_str());
-        match &self.port {
-            Some(port) => string.push_str(format!(":{}", port.to_string()).as_str()),
-            None => {}
-        }
-        string
+    pub fn set_user_info(&mut self, user_info: UserInfo) {
+        self.user_info = Some(user_info);
     }
 }

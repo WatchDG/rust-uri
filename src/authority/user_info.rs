@@ -1,7 +1,9 @@
+use string_repr::StringRepr;
+
 pub struct UserInfo(String);
 
-impl ToString for UserInfo {
-    fn to_string(&self) -> String {
+impl StringRepr for UserInfo {
+    fn string_repr(&self) -> String {
         self.0.clone()
     }
 }

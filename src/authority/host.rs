@@ -1,13 +1,9 @@
+use string_repr::StringRepr;
+
 pub struct Host(String);
 
-impl Default for Host {
-    fn default() -> Host {
-        Host(String::from("localhost"))
-    }
-}
-
-impl ToString for Host {
-    fn to_string(&self) -> String {
+impl StringRepr for Host {
+    fn string_repr(&self) -> String {
         self.0.clone()
     }
 }
