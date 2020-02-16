@@ -7,7 +7,7 @@ pub mod query;
 use authority::Authority;
 
 pub struct URI {
-    authority: Authority,
+    pub authority: Authority,
 }
 
 impl URI {
