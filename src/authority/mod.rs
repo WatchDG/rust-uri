@@ -13,22 +13,6 @@ pub struct Authority {
     user_info: Option<UserInfo>,
 }
 
-impl StringRepr for Authority {
-    fn string_repr(&self) -> String {
-        let mut string = String::new();
-        match &self.user_info {
-            Some(user_info) => string.push_str(format!("{}@", user_info.string_repr()).as_str()),
-            None => {}
-        }
-        string.push_str(self.host.string_repr().as_str());
-        match &self.port {
-            Some(port) => string.push_str(format!(":{}", port.string_repr()).as_str()),
-            None => {}
-        }
-        string
-    }
-}
-
 impl Authority {
     pub fn new(host: Host) -> Authority {
         Authority {
@@ -42,5 +26,21 @@ impl Authority {
     }
     pub fn set_user_info(&mut self, user_info: UserInfo) {
         self.user_info = Some(user_info);
+    }
+}
+
+impl StringRepr for Authority {
+    fn string_repr(&self) -> String {
+        let mut string = String::new();
+        match &self.user_info {
+            Some(user_info) => string.push_str(format!("{}@", user_info.string_repr()).as_str()),
+            None => {}
+        }
+        string.push_str(self.host.string_repr().as_str());
+        match &self.port {
+            Some(port) => string.push_str(format!(":{}", port.string_repr()).as_str()),
+            None => {}
+        }
+        string
     }
 }
