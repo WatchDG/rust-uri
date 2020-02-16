@@ -1,4 +1,5 @@
 use std::error::Error;
+use string_repr::StringRepr;
 
 pub fn pct_encode(data: &str) -> Result<String, Box<dyn Error>> {
     let mut string = String::with_capacity(data.len());
@@ -24,8 +25,8 @@ impl KeyValueComponent {
     }
 }
 
-impl ToString for KeyValueComponent {
-    fn to_string(&self) -> String {
+impl StringRepr for KeyValueComponent {
+    fn string_repr(&self) -> String {
         format!("{}={}", self.0, self.1)
     }
 }

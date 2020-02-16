@@ -1,6 +1,7 @@
 mod component;
 
-pub use component::*;
+pub use component::KeyValueComponent;
+use string_repr::StringRepr;
 
 pub struct Query {
     key_value_components: Option<Vec<KeyValueComponent>>,
@@ -14,14 +15,14 @@ impl Default for Query {
     }
 }
 
-impl ToString for Query {
-    fn to_string(&self) -> String {
+impl StringRepr for Query {
+    fn string_repr(&self) -> String {
         let mut s = String::new();
         match &self.key_value_components {
             Some(kvcs) => {
                 let d = kvcs
                     .iter()
-                    .map(|kvc| kvc.to_string())
+                    .map(|kvc| kvc.string_repr())
                     .collect::<Vec<String>>()
                     .join("&");
                 s.push_str("?");
