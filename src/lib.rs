@@ -7,6 +7,7 @@ pub mod scheme;
 
 use authority::Authority;
 use path::Path;
+use query::Query;
 use scheme::Scheme;
 use string_repr::StringRepr;
 
@@ -14,6 +15,7 @@ pub struct URI {
     scheme: Scheme,
     pub authority: Option<Authority>,
     path: Path,
+    query: Option<Query>,
 }
 
 impl URI {
@@ -22,10 +24,14 @@ impl URI {
             scheme,
             authority: None,
             path,
+            query: None,
         }
     }
     pub fn set_authority(&mut self, authority: Authority) {
         self.authority = Some(authority);
+    }
+    pub fn set_query(&mut self, query: Query) {
+        self.query = Some(query);
     }
 }
 
@@ -37,6 +43,10 @@ impl StringRepr for URI {
             None => {}
         }
         string.push_str(self.path.string_repr().as_ref());
+        match &self.query {
+            Some(query) => string.push_str(format!("?{}", query.string_repr()).as_ref()),
+            None => {}
+        }
         string
     }
 }

@@ -1,6 +1,6 @@
-mod component;
+pub mod component;
 
-pub use component::KeyValueComponent;
+use component::KeyValueComponent;
 use string_repr::StringRepr;
 
 pub struct Query {
@@ -25,8 +25,7 @@ impl StringRepr for Query {
                     .map(|kvc| kvc.string_repr())
                     .collect::<Vec<String>>()
                     .join("&");
-                s.push_str("?");
-                s.push_str(d.as_str());
+                s.push_str(d.as_ref());
             }
             None => {}
         }
