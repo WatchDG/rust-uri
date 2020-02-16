@@ -50,3 +50,21 @@ impl StringRepr for URI {
         string
     }
 }
+
+#[macro_export]
+macro_rules! uri {
+    ($scheme:expr;$path:expr) => {
+        URI::new($scheme, $path)
+    };
+    ($scheme:expr;$authority:expr;$path:expr) => {{
+        let mut uri = URI::new($scheme, $path);
+        uri.set_authority($authority);
+        uri
+    }};
+    ($scheme:expr;$authority:expr;$path:expr;$query:expr) => {{
+        let mut uri = URI::new($scheme, $path);
+        uri.set_authority($authority);
+        uri.set_query($query);
+        uri
+    }};
+}

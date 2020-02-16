@@ -13,3 +13,13 @@ impl StringRepr for Path {
         self.0.clone()
     }
 }
+
+#[macro_export]
+macro_rules! path {
+    ($path: expr;!) => {
+        Path::new($path)
+    };
+    ($path:expr) => {
+        Path::new($path.into())
+    };
+}

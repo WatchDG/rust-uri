@@ -20,3 +20,13 @@ impl fmt::Display for Port {
         write!(formatter, "port: {}", self.0)
     }
 }
+
+#[macro_export]
+macro_rules! port {
+    ($port: expr;!) => {
+        Port::new($port)
+    };
+    ($port:expr) => {
+        Port::new($port.into())
+    };
+}

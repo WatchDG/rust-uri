@@ -13,3 +13,13 @@ impl StringRepr for Scheme {
         self.0.clone()
     }
 }
+
+#[macro_export]
+macro_rules! scheme {
+    ($scheme: expr;!) => {
+        Scheme::new($scheme)
+    };
+    ($scheme:expr) => {
+        Scheme::new($scheme.into())
+    };
+}

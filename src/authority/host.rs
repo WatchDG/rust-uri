@@ -20,3 +20,13 @@ impl fmt::Display for Host {
         write!(formatter, "host: {}", self.0)
     }
 }
+
+#[macro_export]
+macro_rules! host {
+    ($host: expr;!) => {
+        Host::new($host)
+    };
+    ($host:expr) => {
+        Host::new($host.into())
+    };
+}

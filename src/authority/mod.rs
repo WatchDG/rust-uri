@@ -44,3 +44,26 @@ impl StringRepr for Authority {
         string
     }
 }
+
+#[macro_export]
+macro_rules! authority {
+    ($host: expr) => {
+        Authority::new($host)
+    };
+    ($host:expr;$port:expr) => {{
+        let mut authority = Authority::new($host);
+        authority.set_port($port);
+        authority
+    }};
+    ($user_info:expr;$host:expr;$port:expr) => {{
+        let mut authority = Authority::new($host);
+        authority.set_port($port);
+        authority.set_user_info($user_info);
+        authority
+    }};
+    ($user_info:expr;$host:expr;) => {{
+        let mut authority = Authority::new($host);
+        authority.set_user_info($user_info);
+        authority
+    }};
+}
