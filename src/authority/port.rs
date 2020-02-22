@@ -4,6 +4,12 @@ use string_repr::StringRepr;
 pub struct Port(String);
 
 impl Port {
+    /// Create new Port.
+    /// # Example:
+    /// ```
+    /// use wdg_uri::authority::Port;
+    /// let port = Port::new("80".into());
+    /// ```
     pub fn new(data: String) -> Port {
         Port(data)
     }

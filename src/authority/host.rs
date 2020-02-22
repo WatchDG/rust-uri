@@ -4,6 +4,12 @@ use string_repr::StringRepr;
 pub struct Host(String);
 
 impl Host {
+    /// Create new Host.
+    /// # Example:
+    /// ```
+    /// use wdg_uri::authority::Host;
+    /// let host = Host::new("localhost".into());
+    /// ```
     pub fn new(data: String) -> Host {
         Host(data)
     }

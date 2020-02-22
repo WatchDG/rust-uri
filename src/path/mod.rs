@@ -1,8 +1,5 @@
 use string_repr::StringRepr;
 
-/// The path component contains data, usually organized in hierarchical form, that, along with data
-/// in the non-hierarchical query component, serves to identify a resource within the scope of the
-/// URI's scheme and naming authority (if any).
 pub struct Path(String);
 
 impl Path {
