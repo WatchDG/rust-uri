@@ -12,10 +12,10 @@ use scheme::Scheme;
 use string_repr::StringRepr;
 
 pub struct URI {
-    scheme: Scheme,
+    pub scheme: Scheme,
     pub authority: Option<Authority>,
-    path: Path,
-    query: Option<Query>,
+    pub path: Path,
+    pub query: Option<Query>,
 }
 
 impl URI {
