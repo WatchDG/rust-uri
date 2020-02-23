@@ -1,5 +1,10 @@
+use regex::Regex;
 use std::fmt;
 use string_repr::StringRepr;
+
+lazy_static! {
+    static ref PORT_RE: Regex = Regex::new(r"^\d*$").unwrap();
+}
 
 pub struct Port(String);
 
@@ -12,6 +17,18 @@ impl Port {
     /// ```
     pub fn new(data: String) -> Port {
         Port(data)
+    }
+    /// Validate Port.
+    /// # Example:
+    /// ```
+    /// use wdg_uri::authority::Port;
+    /// let port = Port::new("80".into());
+    /// if !port.validate() {
+    ///     panic!("fail");
+    /// }
+    /// ```
+    pub fn validate(&self) -> bool {
+        PORT_RE.is_match(&self.0)
     }
 }
 

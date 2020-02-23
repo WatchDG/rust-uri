@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate lazy_static;
+extern crate regex;
 extern crate string_repr;
 
 pub mod authority;
