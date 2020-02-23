@@ -17,6 +17,7 @@ impl Host {
     /// Validate Host.
     /// # Support:
     /// * IPv4Address
+    /// * IPv6Address
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Host;
