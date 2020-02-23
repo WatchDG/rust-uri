@@ -1,13 +1,5 @@
-use regex::Regex;
 use std::fmt;
 use string_repr::StringRepr;
-
-lazy_static! {
-    static ref HOST_IPv4address_RE: Regex = Regex::new(
-        r"^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)$"
-    )
-    .unwrap();
-}
 
 pub struct Host(String);
 
@@ -34,7 +26,7 @@ impl Host {
     /// }
     /// ```
     pub fn validate(&self) -> bool {
-        HOST_IPv4address_RE.is_match(&self.0)
+        regexp::IP_V4_ADDR.is_match(&self.0)
     }
 
     /// Check if Host is IPv4Address.
@@ -47,7 +39,7 @@ impl Host {
     /// }
     /// ```
     pub fn is_ipv4addr(&self) -> bool {
-        HOST_IPv4address_RE.is_match(&self.0)
+        regexp::IP_V4_ADDR.is_match(&self.0)
     }
 }
 
