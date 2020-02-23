@@ -26,7 +26,7 @@ impl Host {
     /// }
     /// ```
     pub fn validate(&self) -> bool {
-        regexp::IP_V4_ADDR.is_match(&self.0)
+        self.is_ipv4addr() | self.is_ipv6addr()
     }
 
     /// Check if Host is IPv4Address.
@@ -39,7 +39,20 @@ impl Host {
     /// }
     /// ```
     pub fn is_ipv4addr(&self) -> bool {
-        regexp::IP_V4_ADDR.is_match(&self.0)
+        regexp::IP_V4_ADDR(&self.0)
+    }
+
+    /// Check if Host is IPv6Address.
+    /// # Example:
+    /// ```
+    /// use wdg_uri::authority::Host;
+    /// let host = Host::new("127.0.0.1".into());
+    /// if host.is_ipv4addr() {
+    ///    println!("Host is IPv4Address.");
+    /// }
+    /// ```
+    pub fn is_ipv6addr(&self) -> bool {
+        regexp::IP_V6_ADDR(&self.0)
     }
 }
 
