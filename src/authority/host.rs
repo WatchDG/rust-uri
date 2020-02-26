@@ -1,16 +1,16 @@
 use std::fmt;
 use string_repr::StringRepr;
 
-pub struct Host(String);
+pub struct Host<'a>(&'a str);
 
-impl Host {
+impl<'a> Host<'a> {
     /// Create new Host.
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Host;
-    /// let host = Host::new("localhost".into());
+    /// let host = Host::new("localhost");
     /// ```
-    pub fn new(data: String) -> Host {
+    pub fn new(data: &str) -> Host {
         Host(data)
     }
 
@@ -21,7 +21,7 @@ impl Host {
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Host;
-    /// let host = Host::new("127.0.0.1".into());
+    /// let host = Host::new("127.0.0.1");
     /// if !host.validate() {
     ///     panic!("fail");
     /// }
@@ -34,7 +34,7 @@ impl Host {
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Host;
-    /// let host = Host::new("127.0.0.1".into());
+    /// let host = Host::new("127.0.0.1");
     /// if host.is_ipv4addr() {
     ///    println!("Host is IPv4Address.");
     /// }
@@ -47,9 +47,9 @@ impl Host {
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Host;
-    /// let host = Host::new("127.0.0.1".into());
-    /// if host.is_ipv4addr() {
-    ///    println!("Host is IPv4Address.");
+    /// let host = Host::new("::");
+    /// if host.is_ipv6addr() {
+    ///    println!("Host is IPv6Address.");
     /// }
     /// ```
     pub fn is_ipv6addr(&self) -> bool {
@@ -57,13 +57,13 @@ impl Host {
     }
 }
 
-impl StringRepr for Host {
+impl<'a> StringRepr for Host<'a> {
     fn string_repr(&self) -> String {
-        self.0.clone()
+        String::from(self.0)
     }
 }
 
-impl fmt::Display for Host {
+impl<'a> fmt::Display for Host<'a> {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         write!(formatter, "host: {}", self.0)
     }
@@ -71,10 +71,7 @@ impl fmt::Display for Host {
 
 #[macro_export]
 macro_rules! host {
-    ($host: expr;!) => {
-        Host::new($host)
-    };
     ($host:expr) => {
-        Host::new($host.into())
+        Host::new($host)
     };
 }

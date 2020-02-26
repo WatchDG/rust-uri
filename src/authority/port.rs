@@ -6,23 +6,23 @@ lazy_static! {
     static ref PORT_RE: Regex = Regex::new(r"^\d*$").unwrap();
 }
 
-pub struct Port(String);
+pub struct Port<'a>(&'a str);
 
-impl Port {
+impl<'a> Port<'a> {
     /// Create new Port.
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Port;
-    /// let port = Port::new("80".into());
+    /// let port = Port::new("80");
     /// ```
-    pub fn new(data: String) -> Port {
+    pub fn new(data: &str) -> Port {
         Port(data)
     }
     /// Validate Port.
     /// # Example:
     /// ```
     /// use wdg_uri::authority::Port;
-    /// let port = Port::new("80".into());
+    /// let port = Port::new("80");
     /// if !port.validate() {
     ///     panic!("fail");
     /// }
@@ -32,13 +32,13 @@ impl Port {
     }
 }
 
-impl StringRepr for Port {
+impl<'a> StringRepr for Port<'a> {
     fn string_repr(&self) -> String {
-        self.0.clone()
+        String::from(self.0)
     }
 }
 
-impl fmt::Display for Port {
+impl<'a> fmt::Display for Port<'a> {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         write!(formatter, "port: {}", self.0)
     }
@@ -46,10 +46,7 @@ impl fmt::Display for Port {
 
 #[macro_export]
 macro_rules! port {
-    ($port: expr;!) => {
-        Port::new($port)
-    };
     ($port:expr) => {
-        Port::new($port.into())
+        Port::new($port)
     };
 }

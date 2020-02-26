@@ -7,29 +7,29 @@ pub use port::*;
 use string_repr::StringRepr;
 pub use user_info::*;
 
-pub struct Authority {
-    host: Host,
-    port: Option<Port>,
-    user_info: Option<UserInfo>,
+pub struct Authority<'a> {
+    host: Host<'a>,
+    port: Option<Port<'a>>,
+    user_info: Option<UserInfo<'a>>,
 }
 
-impl Authority {
-    pub fn new(host: Host) -> Authority {
+impl<'a> Authority<'a> {
+    pub fn new(host: Host<'a>) -> Authority<'a> {
         Authority {
             host,
             port: None,
             user_info: None,
         }
     }
-    pub fn set_port(&mut self, port: Port) {
+    pub fn set_port(&mut self, port: Port<'a>) {
         self.port = Some(port);
     }
-    pub fn set_user_info(&mut self, user_info: UserInfo) {
+    pub fn set_user_info(&mut self, user_info: UserInfo<'a>) {
         self.user_info = Some(user_info);
     }
 }
 
-impl StringRepr for Authority {
+impl<'a> StringRepr for Authority<'a> {
     fn string_repr(&self) -> String {
         let mut string = String::new();
         match &self.user_info {

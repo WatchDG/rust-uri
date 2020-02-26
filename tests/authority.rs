@@ -10,15 +10,15 @@ mod authority {
             use string_repr::StringRepr;
             #[test]
             fn t0() {
-                assert_eq!(Host::new("127.0.0.1".into()).string_repr(), "127.0.0.1");
+                assert_eq!(Host::new("127.0.0.1").string_repr(), "127.0.0.1");
             }
             #[test]
             fn t1() {
-                assert_eq!(Host::new("localhost".into()).string_repr(), "localhost");
+                assert_eq!(Host::new("localhost").string_repr(), "localhost");
             }
             #[test]
             fn t2() {
-                assert_eq!(Host::new("example.com".into()).string_repr(), "example.com");
+                assert_eq!(Host::new("example.com").string_repr(), "example.com");
             }
         }
     }
@@ -29,7 +29,7 @@ mod authority {
             use string_repr::StringRepr;
             #[test]
             fn t0() {
-                assert_eq!(Port::new("80".into()).string_repr(), "80");
+                assert_eq!(Port::new("80").string_repr(), "80");
             }
         }
     }
@@ -38,8 +38,8 @@ mod authority {
         use string_repr::StringRepr;
         #[test]
         fn t0() {
-            let host = Host::new("localhost".into());
-            let port = Port::new("8080".into());
+            let host = Host::new("localhost");
+            let port = Port::new("8080");
             let mut authority = Authority::new(host);
             authority.set_port(port);
             assert_eq!(authority.string_repr(), "localhost:8080");

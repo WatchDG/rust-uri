@@ -15,15 +15,15 @@ use query::Query;
 use scheme::Scheme;
 use string_repr::StringRepr;
 
-pub struct URI {
+pub struct URI<'a> {
     pub scheme: Scheme,
-    pub authority: Option<Authority>,
+    pub authority: Option<Authority<'a>>,
     pub path: Path,
     pub query: Option<Query>,
 }
 
-impl URI {
-    pub fn new(scheme: Scheme, path: Path) -> URI {
+impl<'a> URI<'a> {
+    pub fn new(scheme: Scheme, path: Path) -> URI<'a> {
         URI {
             scheme,
             authority: None,
@@ -31,7 +31,7 @@ impl URI {
             query: None,
         }
     }
-    pub fn set_authority(&mut self, authority: Authority) {
+    pub fn set_authority(&mut self, authority: Authority<'a>) {
         self.authority = Some(authority);
     }
     pub fn set_query(&mut self, query: Query) {
@@ -39,7 +39,7 @@ impl URI {
     }
 }
 
-impl StringRepr for URI {
+impl<'a> StringRepr for URI<'a> {
     fn string_repr(&self) -> String {
         let mut string = format!("{}:", self.scheme.string_repr());
         match &self.authority {

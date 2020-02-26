@@ -1,15 +1,15 @@
 use string_repr::StringRepr;
 
-pub struct UserInfo(String);
+pub struct UserInfo<'a>(&'a str);
 
-impl StringRepr for UserInfo {
+impl<'a> StringRepr for UserInfo<'a> {
     fn string_repr(&self) -> String {
-        self.0.clone()
+        String::from(self.0)
     }
 }
 
-impl UserInfo {
-    pub fn new(data: String) -> UserInfo {
+impl<'a> UserInfo<'a> {
+    pub fn new(data: &str) -> UserInfo {
         UserInfo(data)
     }
 }
