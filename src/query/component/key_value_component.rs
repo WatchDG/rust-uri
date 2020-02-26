@@ -12,20 +12,53 @@ pub fn pct_encode(data: &str) -> Result<String, Box<dyn Error>> {
     Ok(string)
 }
 
-pub struct KeyValueComponent<'a>(&'a str, &'a str);
-
-impl<'a> KeyValueComponent<'a> {
-    pub fn new(key: &'a str, value: &'a str) -> KeyValueComponent<'a> {
-        KeyValueComponent(key, value)
-    }
-    //    pub fn encode(&mut self) -> Result<(), Box<dyn Error>> {
-    //        self.0 = pct_encode(self.0)?.as_str();
-    //        self.1 = pct_encode(self.1)?.as_str();
-    //        Ok(())
-    //    }
+pub enum KeyValueBuilderConfig {
+    CUSTOM(KeyValueBuilderConfigEncode),
 }
 
-impl<'a> StringRepr for KeyValueComponent<'a> {
+pub enum KeyValueBuilderConfigEncode {
+    KEY,
+    VALUE,
+    BOTH,
+    NONE,
+}
+
+pub struct KeyValue<'a>(&'a str, &'a str);
+
+impl<'a> KeyValue<'a> {
+    pub fn new(key: &'a str, value: &'a str) -> KeyValue<'a> {
+        KeyValue(key, value)
+    }
+    pub fn build(
+        key: &'a str,
+        value: &'a str,
+        config: Option<KeyValueBuilderConfig>,
+    ) -> Result<KeyValue<'a>, Box<dyn Error>> {
+        match config {
+            Some(cfg) => match cfg {
+                KeyValueBuilderConfig::CUSTOM(encode_config) => match encode_config {
+                    KeyValueBuilderConfigEncode::KEY => {
+                        Ok(KeyValue::new(Box::leak(Box::new(pct_encode(key)?)), value))
+                    }
+                    KeyValueBuilderConfigEncode::VALUE => {
+                        Ok(KeyValue::new(key, Box::leak(Box::new(pct_encode(value)?))))
+                    }
+                    KeyValueBuilderConfigEncode::BOTH => Ok(KeyValue::new(
+                        Box::leak(Box::new(pct_encode(key)?)),
+                        Box::leak(Box::new(pct_encode(value)?)),
+                    )),
+                    KeyValueBuilderConfigEncode::NONE => Ok(KeyValue::new(key, value)),
+                },
+            },
+            None => Ok(KeyValue::new(
+                Box::leak(Box::new(pct_encode(key)?)),
+                Box::leak(Box::new(pct_encode(value)?)),
+            )),
+        }
+    }
+}
+
+impl<'a> StringRepr for KeyValue<'a> {
     fn string_repr(&self) -> String {
         format!("{}={}", self.0, self.1)
     }

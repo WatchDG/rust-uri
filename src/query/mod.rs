@@ -1,10 +1,10 @@
 pub mod component;
 
-use component::KeyValueComponent;
+use component::KeyValue;
 use string_repr::StringRepr;
 
 pub struct Query<'a> {
-    key_value_components: Option<Vec<KeyValueComponent<'a>>>,
+    key_value_components: Option<Vec<KeyValue<'a>>>,
 }
 
 impl<'a> StringRepr for Query<'a> {
@@ -31,13 +31,13 @@ impl<'a> Query<'a> {
             key_value_components: None,
         }
     }
-    pub fn add_kvc(&mut self, data: KeyValueComponent<'a>) {
+    pub fn add_kvc(&mut self, data: KeyValue<'a>) {
         match &mut self.key_value_components {
             Some(kvcs) => {
                 kvcs.push(data);
             }
             None => {
-                let mut vec = Vec::<KeyValueComponent>::new();
+                let mut vec = Vec::<KeyValue>::new();
                 vec.push(data);
                 self.key_value_components = Some(vec);
             }
