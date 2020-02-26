@@ -1,31 +1,28 @@
 use string_repr::StringRepr;
 
-pub struct Path(String);
+pub struct Path<'a>(&'a str);
 
-impl Path {
+impl<'a> Path<'a> {
     /// Create new Path.
     /// # Example:
     /// ```
     /// use wdg_uri::path::Path;
-    /// let path = Path::new("/".into());
+    /// let path = Path::new("/");
     /// ```
-    pub fn new(data: String) -> Path {
+    pub fn new(data: &str) -> Path {
         Path(data)
     }
 }
 
-impl StringRepr for Path {
+impl<'a> StringRepr for Path<'a> {
     fn string_repr(&self) -> String {
-        self.0.clone()
+        String::from(self.0)
     }
 }
 
 #[macro_export]
 macro_rules! path {
-    ($path: expr;!) => {
-        Path::new($path)
-    };
     ($path:expr) => {
-        Path::new($path.into())
+        Path::new($path)
     };
 }

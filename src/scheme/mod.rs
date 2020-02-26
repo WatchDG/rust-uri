@@ -1,25 +1,30 @@
 use string_repr::StringRepr;
 
-pub struct Scheme(String);
+pub enum Scheme<'a> {
+    HTTP,
+    HTTPS,
+    CUSTOM(&'a str),
+}
 
-impl Scheme {
-    pub fn new(data: String) -> Scheme {
-        Scheme(data)
+impl<'a> Scheme<'a> {
+    pub fn new(data: &str) -> Scheme {
+        Scheme::CUSTOM(data)
     }
 }
 
-impl StringRepr for Scheme {
+impl<'a> StringRepr for Scheme<'a> {
     fn string_repr(&self) -> String {
-        self.0.clone()
+        match self {
+            Scheme::HTTP => String::from("http"),
+            Scheme::HTTPS => String::from("https"),
+            Scheme::CUSTOM(string) => String::from(*string),
+        }
     }
 }
 
 #[macro_export]
 macro_rules! scheme {
-    ($scheme: expr;!) => {
-        Scheme::new($scheme)
-    };
     ($scheme:expr) => {
-        Scheme::new($scheme.into())
+        Scheme::new($scheme)
     };
 }

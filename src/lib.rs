@@ -16,14 +16,14 @@ use scheme::Scheme;
 use string_repr::StringRepr;
 
 pub struct URI<'a> {
-    pub scheme: Scheme,
+    pub scheme: Scheme<'a>,
     pub authority: Option<Authority<'a>>,
-    pub path: Path,
-    pub query: Option<Query>,
+    pub path: Path<'a>,
+    pub query: Option<Query<'a>>,
 }
 
 impl<'a> URI<'a> {
-    pub fn new(scheme: Scheme, path: Path) -> URI<'a> {
+    pub fn new(scheme: Scheme<'a>, path: Path<'a>) -> URI<'a> {
         URI {
             scheme,
             authority: None,
@@ -34,7 +34,7 @@ impl<'a> URI<'a> {
     pub fn set_authority(&mut self, authority: Authority<'a>) {
         self.authority = Some(authority);
     }
-    pub fn set_query(&mut self, query: Query) {
+    pub fn set_query(&mut self, query: Query<'a>) {
         self.query = Some(query);
     }
 }

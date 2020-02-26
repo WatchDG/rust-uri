@@ -1,3 +1,4 @@
+use crate::scheme::Scheme;
 use regex::Regex;
 use std::fmt;
 use string_repr::StringRepr;
@@ -29,6 +30,13 @@ impl<'a> Port<'a> {
     /// ```
     pub fn validate(&self) -> bool {
         PORT_RE.is_match(&self.0)
+    }
+    pub fn default_for_scheme(scheme: Scheme) -> Option<Port> {
+        match scheme {
+            Scheme::HTTP => Some(Port("80")),
+            Scheme::HTTPS => Some(Port("443")),
+            Scheme::CUSTOM(_) => None,
+        }
     }
 }
 

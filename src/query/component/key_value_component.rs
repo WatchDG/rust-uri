@@ -12,20 +12,20 @@ pub fn pct_encode(data: &str) -> Result<String, Box<dyn Error>> {
     Ok(string)
 }
 
-pub struct KeyValueComponent(String, String);
+pub struct KeyValueComponent<'a>(&'a str, &'a str);
 
-impl KeyValueComponent {
-    pub fn new(key: String, value: String) -> KeyValueComponent {
+impl<'a> KeyValueComponent<'a> {
+    pub fn new(key: &'a str, value: &'a str) -> KeyValueComponent<'a> {
         KeyValueComponent(key, value)
     }
-    pub fn encode(&mut self) -> Result<(), Box<dyn Error>> {
-        self.0 = pct_encode(&self.0)?;
-        self.1 = pct_encode(&self.1)?;
-        Ok(())
-    }
+    //    pub fn encode(&mut self) -> Result<(), Box<dyn Error>> {
+    //        self.0 = pct_encode(self.0)?.as_str();
+    //        self.1 = pct_encode(self.1)?.as_str();
+    //        Ok(())
+    //    }
 }
 
-impl StringRepr for KeyValueComponent {
+impl<'a> StringRepr for KeyValueComponent<'a> {
     fn string_repr(&self) -> String {
         format!("{}={}", self.0, self.1)
     }
