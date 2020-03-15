@@ -15,6 +15,12 @@ pub enum Scheme<'a> {
 }
 
 impl<'a> Scheme<'a> {
+    /// Create new Scheme.
+    /// # Example:
+    /// ```rust
+    /// use wdg_uri::scheme::Scheme;
+    /// let custom_scheme = Scheme::new("http");
+    /// ```
     pub fn new(data: &str) -> Scheme {
         Scheme::CUSTOM(data)
     }
