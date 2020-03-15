@@ -1,7 +1,13 @@
 use crate::scheme::Scheme;
 use regex::Regex;
-use std::fmt;
 use string_repr::StringRepr;
+
+#[macro_export]
+macro_rules! port {
+    ($port:expr) => {
+        Port::new($port)
+    };
+}
 
 lazy_static! {
     static ref PORT_RE: Regex = Regex::new(r"^\d*$").unwrap();
@@ -44,17 +50,4 @@ impl<'a> StringRepr for Port<'a> {
     fn string_repr(&self) -> String {
         String::from(self.0)
     }
-}
-
-impl<'a> fmt::Display for Port<'a> {
-    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "port: {}", self.0)
-    }
-}
-
-#[macro_export]
-macro_rules! port {
-    ($port:expr) => {
-        Port::new($port)
-    };
 }

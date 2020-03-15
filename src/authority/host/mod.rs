@@ -1,5 +1,11 @@
-use std::fmt;
 use string_repr::StringRepr;
+
+#[macro_export]
+macro_rules! host {
+    ($host:expr) => {
+        Host::new($host)
+    };
+}
 
 pub struct Host<'a>(&'a str);
 
@@ -61,17 +67,4 @@ impl<'a> StringRepr for Host<'a> {
     fn string_repr(&self) -> String {
         String::from(self.0)
     }
-}
-
-impl<'a> fmt::Display for Host<'a> {
-    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        write!(formatter, "host: {}", self.0)
-    }
-}
-
-#[macro_export]
-macro_rules! host {
-    ($host:expr) => {
-        Host::new($host)
-    };
 }
