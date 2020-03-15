@@ -8,6 +8,29 @@ use regex::{Error, Regex};
 use string_repr::StringRepr;
 pub use user_info::*;
 
+#[macro_export]
+macro_rules! authority {
+    ($host: expr) => {
+        Authority::new($host)
+    };
+    ($host:expr;$port:expr) => {{
+        let mut authority = Authority::new($host);
+        authority.set_port($port);
+        authority
+    }};
+    ($user_info:expr;$host:expr;$port:expr) => {{
+        let mut authority = Authority::new($host);
+        authority.set_port($port);
+        authority.set_user_info($user_info);
+        authority
+    }};
+    ($user_info:expr;$host:expr;) => {{
+        let mut authority = Authority::new($host);
+        authority.set_user_info($user_info);
+        authority
+    }};
+}
+
 pub struct Authority<'a> {
     host: Host<'a>,
     port: Option<Port<'a>>,
@@ -75,7 +98,7 @@ impl AuthorityParse for &str {
             )
             .unwrap();
         }
-        let captures = AUTHORITY_PARSE_RE.captures(&self).unwrap();
+        let captures = regexp::uri::authority::parse::RE.captures(&self).unwrap();
         Ok(Authority {
             host: captures
                 .name("host")
@@ -89,27 +112,4 @@ impl AuthorityParse for &str {
                 .map_or(None, |user_info| Some(UserInfo::new(user_info.as_str()))),
         })
     }
-}
-
-#[macro_export]
-macro_rules! authority {
-    ($host: expr) => {
-        Authority::new($host)
-    };
-    ($host:expr;$port:expr) => {{
-        let mut authority = Authority::new($host);
-        authority.set_port($port);
-        authority
-    }};
-    ($user_info:expr;$host:expr;$port:expr) => {{
-        let mut authority = Authority::new($host);
-        authority.set_port($port);
-        authority.set_user_info($user_info);
-        authority
-    }};
-    ($user_info:expr;$host:expr;) => {{
-        let mut authority = Authority::new($host);
-        authority.set_user_info($user_info);
-        authority
-    }};
 }
