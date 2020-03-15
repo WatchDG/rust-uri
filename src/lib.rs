@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate lazy_static;
+extern crate default_port;
 extern crate regex;
 extern crate regexp;
 extern crate string_repr;

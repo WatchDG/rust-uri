@@ -1,4 +1,12 @@
+use default_port::DefaultPort;
 use string_repr::StringRepr;
+
+#[macro_export]
+macro_rules! scheme {
+    ($scheme:expr) => {
+        Scheme::new($scheme)
+    };
+}
 
 pub enum Scheme<'a> {
     HTTP,
@@ -22,9 +30,12 @@ impl<'a> StringRepr for Scheme<'a> {
     }
 }
 
-#[macro_export]
-macro_rules! scheme {
-    ($scheme:expr) => {
-        Scheme::new($scheme)
-    };
+impl<'a> DefaultPort for Scheme<'a> {
+    fn default_port(&self) -> Option<usize> {
+        match self {
+            Scheme::HTTP => Some(80),
+            Scheme::HTTPS => Some(443),
+            _ => None,
+        }
+    }
 }
